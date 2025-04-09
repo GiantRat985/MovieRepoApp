@@ -56,14 +56,13 @@ namespace MovieRepoApp
 
         private static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
         {
-            builder.Services.AddScoped<MovieSearchViewModel>();
+            builder.Services.AddScoped<AddWatchedMovieViewModel>();
 
             return builder;
         }       
         
         private static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
         {
-            builder.Services.AddTransient<MovieSearchContentView>();
             builder.Services.AddTransient<AddWatchedMoviePage>();
 
             return builder;

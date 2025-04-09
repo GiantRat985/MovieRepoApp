@@ -8,9 +8,17 @@
     Shell.FlyoutBehavior="Disabled"
     Title="MovieRepoApp">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:AddWatchedMoviePage}"
-        Route="AddWatchedMoviePage" />
+    <TabBar>
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+        <ShellContent
+            Title="Search"
+            ContentTemplate="{DataTemplate views:AddWatchedMoviePage}"
+            Route="AddWatchedMovie" />
+        <ShellContent
+            Title="Library" />
+    </TabBar>
 
 </Shell>

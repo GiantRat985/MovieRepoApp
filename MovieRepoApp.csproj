@@ -77,15 +77,13 @@
 
 	<ItemGroup>
 	  <Folder Include="Helpers\" />
+	  <Folder Include="Services\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\AddWatchedMovie.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\MovieSearchContentView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+	  <Compile Update="Views\AddWatchedMoviePage.xaml.cs">
+	    <DependentUpon>AddWatchedMoviePage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

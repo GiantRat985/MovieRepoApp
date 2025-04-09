@@ -6,7 +6,10 @@ using Newtonsoft.Json;
 
 namespace MovieRepoApp.ViewModels
 {
-    public class MovieSearchViewModel : BaseViewModel, IMovieSearch
+    /// <summary>
+    /// Handles movie search functions.
+    /// </summary>
+    public class AddWatchedMovieViewModel : BaseViewModel
     {
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
@@ -53,10 +56,11 @@ namespace MovieRepoApp.ViewModels
                 }
             }
         }
-
+        /// <summary>
+        /// Command for the search button.
+        /// </summary>
         public ICommand SearchCommand { get; private set; }
-
-        public MovieSearchViewModel(IConfiguration config, HttpClient client)
+        public AddWatchedMovieViewModel(IConfiguration config, HttpClient client)
         {
             _config = config;
             _httpClient = client;
@@ -65,19 +69,31 @@ namespace MovieRepoApp.ViewModels
 
             SearchCommand = new AsyncCommand(ExecuteSearch, CanExecuteSearch);
         }
-
+        /// <summary>
+        /// Determines if the search command can be executed.
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns>true if <see cref="Title"/> is not null.</returns>
         public bool CanExecuteSearch(object? parameter)
         {
             return (!string.IsNullOrWhiteSpace(Title));
         }
-
+        /// <summary>
+        /// Queries OMDB API with input information and sets the information to an object.
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         public async Task ExecuteSearch(object? parameter)
         {
             var response = await QueryClient($"{_omdbUri}?apikey={_apiKey}&t={Title}");
             Metadata = ParseJson(response);
             Poster = Metadata.Poster;
         }
-
+        /// <summary>
+        /// Sends GET request to http client.
+        /// </summary>
+        /// <param name="getRequest">GET query string.</param>
+        /// <returns>JSON string response.</returns>
         public async Task<string> QueryClient(string getRequest)
         {
             var response = await _httpClient.GetAsync(getRequest);
@@ -97,7 +113,11 @@ namespace MovieRepoApp.ViewModels
                 return $"An error has occured: {ex.Message}";
             }
         }
-
+        /// <summary>
+        /// Parses JSON string into <see cref="MovieMetadata"/> object.
+        /// </summary>
+        /// <param name="json">JSON string.</param>
+        /// <returns><see cref="MovieMetadata"/> object.</returns>
         private MovieMetadata ParseJson(string json)
         {
             var metadata = new MovieMetadata();
