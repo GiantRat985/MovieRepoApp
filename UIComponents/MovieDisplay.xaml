@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MovieRepoApp.UIComponents"
+             x:Class="MovieRepoApp.UIComponents.MovieDisplay"
+             x:Name="This">
+    <VerticalStackLayout>
+        <Grid RowDefinitions="Auto"
+              ColumnDefinitions="*, *">
+            <Image x:Name="PosterDisplay"
+                   Grid.Column="0"
+                   HeightRequest="450"
+                   Source="{Binding PosterSource, Source={x:Reference This}}"/>
+            <VerticalStackLayout x:Name="TextDisplay"
+                                 Grid.Column="1"
+                                 Margin="0,20,20,0">
+                <HorizontalStackLayout>
+                    <Label x:Name="TitleDisplay"
+                           FontSize="Large"
+                           Text="{Binding MovieTitle, Source={x:Reference This}}"/>
+                    <Label x:Name="ReleaseYearDisplay"
+                           Margin="40,0,0,0"
+                           VerticalTextAlignment="End"
+                           FontSize="Medium"
+                           Text="{Binding MovieReleaseYear, Source={x:Reference This}}"/>
+                </HorizontalStackLayout>
+                <Label x:Name="DescriptionDisplay"
+                       Margin="0,10,20,0"
+                       Text="{Binding MovieDescription, Source={x:Reference This}}"/>
+            </VerticalStackLayout>
+        </Grid>
+    </VerticalStackLayout>
+</ContentView>

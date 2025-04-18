@@ -2,27 +2,35 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:MovieRepoApp.Views"
+             xmlns:viewModels="clr-namespace:MovieRepoApp.ViewModels"
+             xmlns:components="clr-namespace:MovieRepoApp.UIComponents"
              x:Class="MovieRepoApp.Views.AddWatchedMoviePage"
+             x:DataType="viewModels:AddWatchedMovieViewModel"
              Title="AddWatchedMoviePage">
-   
+
     <VerticalStackLayout>
         <Label Text="Search"
                Margin="110,0,100,10"/>
         <VerticalStackLayout>
             <Entry x:Name ="SearchBox"
                    Placeholder="Title"
-                   Text="{Binding Title}"
+                   Text="{Binding SearchText}"
                    HorizontalOptions="Fill"
                    Margin="100,0,100,10"/>
-            <Button x:Name ="SearchButton"
-                    Text="Search"
-                    Command="{Binding SearchCommand}"
-                    HorizontalOptions="Center"/>
+            <HorizontalStackLayout>
+                <Button x:Name="SearchButton"
+                        Text="Search"
+                        Command="{Binding SearchCommand}"
+                        HorizontalOptions="Center"/>
+                <Button x:Name="AddButton"
+                        Text="Add"
+                        Command="{Binding}"
+                        HorizontalOptions="Center"/>
+            </HorizontalStackLayout>
         </VerticalStackLayout>
-        <Image  x:Name="Display"
-                Source="{Binding Poster}" 
-                WidthRequest="300"
-                HeightRequest="450"
-                Margin="40"/>
+        <components:MovieDisplay PosterSource="{Binding Poster}"
+                                 MovieTitle="{Binding Title}"
+                                 MovieReleaseYear="{Binding ReleaseYear}"
+                                 MovieDescription="{Binding Description}"/>
     </VerticalStackLayout>
 </ContentPage>

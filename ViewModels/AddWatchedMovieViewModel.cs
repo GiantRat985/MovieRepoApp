@@ -15,22 +15,8 @@ namespace MovieRepoApp.ViewModels
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
         private readonly string _omdbUri;
-        private string? _title;
+
         private MovieMetadata _metadata;
-        private string _poster;
-        public string? Title
-        {
-            get => _title;
-            set
-            {
-                if (_title != value)
-                {
-                    _title = value;
-                    OnPropertyChanged();
-                    ((AsyncCommand)SearchCommand).RaiseCanExecuteChanged();
-                }
-            }
-        }
         public MovieMetadata Metadata
         {
             get => _metadata;
@@ -40,10 +26,63 @@ namespace MovieRepoApp.ViewModels
                 {
                     _metadata = value;
                     OnPropertyChanged();
+                }
+            }
+        }
+        private string? _search;
+        public string? SearchText
+        {
+            get => _search;
+            set
+            {
+                if (_search != value)
+                {
+                    _search = value;
+                    OnPropertyChanged();
                     ((AsyncCommand)SearchCommand).RaiseCanExecuteChanged();
                 }
             }
         }
+        private string? _title;
+        public string? Title
+        {
+            get => _title;
+            set
+            {
+                if (_title != value)
+                {
+                    _title = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private string? _releaseYear;
+        public string? ReleaseYear
+        {
+            get => _releaseYear;
+            set
+            {
+                if (_releaseYear != value)
+                {
+                    _releaseYear = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private string? _description;
+        public string? Description
+        {
+            get => _description;
+            set
+            {
+                if (_description != value)
+                {
+                    _description = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private string? _poster;
         public string? Poster
         {
             get => _poster;
@@ -60,6 +99,12 @@ namespace MovieRepoApp.ViewModels
         /// Command for the search button.
         /// </summary>
         public ICommand SearchCommand { get; private set; }
+        public ICommand AddCommand { get; private set; }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="client"></param>
         public AddWatchedMovieViewModel(IConfiguration config, HttpClient client)
         {
             _config = config;
@@ -68,15 +113,29 @@ namespace MovieRepoApp.ViewModels
             _omdbUri = _config["OmdbDataEndpoint"];
 
             SearchCommand = new AsyncCommand(ExecuteSearch, CanExecuteSearch);
+            AddCommand = new AsyncCommand(ExecuteAdd, CanExecuteAdd);
+        }
+        public async Task ExecuteAdd(object? parameter)
+        {
+
+        }
+        public bool CanExecuteAdd(object? parameter)
+        {
+            if (Metadata == null)
+            {
+                return false;
+            }
+
+            return (bool.Parse(Metadata.Response));
         }
         /// <summary>
         /// Determines if the search command can be executed.
         /// </summary>
         /// <param name="parameter"></param>
-        /// <returns>true if <see cref="Title"/> is not null.</returns>
+        /// <returns>true if <see cref="SearchText"/> is not null.</returns>
         public bool CanExecuteSearch(object? parameter)
         {
-            return (!string.IsNullOrWhiteSpace(Title));
+            return (!string.IsNullOrWhiteSpace(SearchText));
         }
         /// <summary>
         /// Queries OMDB API with input information and sets the information to an object.
@@ -85,8 +144,11 @@ namespace MovieRepoApp.ViewModels
         /// <returns></returns>
         public async Task ExecuteSearch(object? parameter)
         {
-            var response = await QueryClient($"{_omdbUri}?apikey={_apiKey}&t={Title}");
+            var response = await QueryClient($"{_omdbUri}?apikey={_apiKey}&t={SearchText}");
             Metadata = ParseJson(response);
+            Title = Metadata.Title;
+            ReleaseYear = Metadata.Year;
+            Description = Metadata.Plot;
             Poster = Metadata.Poster;
         }
         /// <summary>
