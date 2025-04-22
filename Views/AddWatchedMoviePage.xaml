@@ -17,14 +17,14 @@
                    Text="{Binding SearchText}"
                    HorizontalOptions="Fill"
                    Margin="100,0,100,10"/>
-            <HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center">
                 <Button x:Name="SearchButton"
                         Text="Search"
                         Command="{Binding SearchCommand}"
                         HorizontalOptions="Center"/>
                 <Button x:Name="AddButton"
                         Text="Add"
-                        Command="{Binding}"
+                        Command="{Binding AddCommand}"
                         HorizontalOptions="Center"/>
             </HorizontalStackLayout>
         </VerticalStackLayout>

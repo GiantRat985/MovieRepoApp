@@ -5,6 +5,10 @@ using Microsoft.Extensions.Configuration.Json;
 using System.Reflection;
 using MovieRepoApp.ViewModels;
 using MovieRepoApp.Views;
+using MovieRepoApp.Services.Repo;
+using MovieRepoApp.Services;
+using MovieRepoApp.Models;
+using MovieRepoApp.Models.Tables;
 
 namespace MovieRepoApp
 {
@@ -30,7 +34,16 @@ namespace MovieRepoApp
     		builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var app = builder.Build();
+            InitializeDatabase(app);
+            return app;
+        }
+
+        private static void InitializeDatabase(MauiApp app)
+        {
+            var conn = app.Services.GetRequiredService<ISQLiteConnectionFactory>().CreateAsyncConnection();
+            conn.CreateTableAsync<MovieEntity>().Wait();
+            conn.CreateTableAsync<MovieUserData>().Wait();
         }
 
         /// <summary>
@@ -71,6 +84,12 @@ namespace MovieRepoApp
         private static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
         {
             builder.Services.AddSingleton<HttpClient>();
+            builder.Services.AddSingleton<IDialogueService, DialogueService>();
+
+            var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MovieRepo.db3");
+            builder.Services.AddTransient<ISQLiteConnectionFactory, SQLiteConnectionFactory>(s => new SQLiteConnectionFactory(dbPath));
+            builder.Services.AddSingleton<IRepository<MovieEntity>, MovieRepository<MovieEntity>>();
+            builder.Services.AddSingleton<IRepository<MovieUserData>, MovieRepository<MovieUserData>>();
 
             return builder;
         }

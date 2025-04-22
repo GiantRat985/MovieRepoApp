@@ -2,6 +2,9 @@
 using System.Windows.Input;
 using Microsoft.Extensions.Configuration;
 using MovieRepoApp.Models;
+using MovieRepoApp.Models.Tables;
+using MovieRepoApp.Services;
+using MovieRepoApp.Services.Repo;
 using Newtonsoft.Json;
 
 namespace MovieRepoApp.ViewModels
@@ -13,8 +16,10 @@ namespace MovieRepoApp.ViewModels
     {
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
+        private readonly IRepository<MovieEntity> _movieRepository;
         private readonly string _apiKey;
         private readonly string _omdbUri;
+        private readonly IDialogueService _dialogueService;
 
         private MovieMetadata _metadata;
         public MovieMetadata Metadata
@@ -26,6 +31,7 @@ namespace MovieRepoApp.ViewModels
                 {
                     _metadata = value;
                     OnPropertyChanged();
+                    ((AsyncCommand)AddCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -56,8 +62,8 @@ namespace MovieRepoApp.ViewModels
                 }
             }
         }
-        private string? _releaseYear;
-        public string? ReleaseYear
+        private string _releaseYear;
+        public string ReleaseYear
         {
             get => _releaseYear;
             set
@@ -105,19 +111,53 @@ namespace MovieRepoApp.ViewModels
         /// </summary>
         /// <param name="config"></param>
         /// <param name="client"></param>
-        public AddWatchedMovieViewModel(IConfiguration config, HttpClient client)
+        public AddWatchedMovieViewModel(IConfiguration config, HttpClient client, IRepository<MovieEntity> repository, IDialogueService dialogueService)
         {
             _config = config;
             _httpClient = client;
+            _movieRepository = repository;
+            _dialogueService = dialogueService;
             _apiKey = _config["OmdbApiKey"];
             _omdbUri = _config["OmdbDataEndpoint"];
 
             SearchCommand = new AsyncCommand(ExecuteSearch, CanExecuteSearch);
             AddCommand = new AsyncCommand(ExecuteAdd, CanExecuteAdd);
         }
+        /// <summary>
+        /// Takes currently selected movie and adds it to database asynchronously.
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         public async Task ExecuteAdd(object? parameter)
         {
-
+            try
+            {
+                if (bool.Parse(Metadata.Response) != true)
+                {
+                    throw new ArgumentException("Data is corrupt.");
+                }
+                await _movieRepository.AddAsync(
+                    new MovieEntity
+                    {
+                        ImdbID = Metadata.ImdbID,
+                        Title = Metadata.Title,
+                        Year = int.Parse(Metadata.Year),
+                        Rated = Metadata.Rated,
+                        Genre = Metadata.Genre,
+                        Director = Metadata.Director,
+                        Writer = Metadata.Writer,
+                        Actors = Metadata.Actors,
+                        Plot = Metadata.Plot,
+                        Country = Metadata.Country,
+                        Poster = Metadata.Poster,
+                        ImdbRating = Metadata.ImdbRating,
+                        Type = Metadata.Type
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                await _dialogueService.ShowErrorAsync(ex.Message);
+            }
         }
         public bool CanExecuteAdd(object? parameter)
         {
@@ -125,8 +165,12 @@ namespace MovieRepoApp.ViewModels
             {
                 return false;
             }
+            else if (bool.Parse(Metadata.Response) != true)
+            {
+                return false;
+            }
 
-            return (bool.Parse(Metadata.Response));
+            return true;
         }
         /// <summary>
         /// Determines if the search command can be executed.
