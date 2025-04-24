@@ -5,12 +5,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MovieRepoApp.Models;
-using MovieRepoApp.Models.Tables;
 using SQLite;
 
 namespace MovieRepoApp.Services.Repo
 {
-    public class MovieRepository<T> : IRepository<T> where T : class
+    public class MovieRepository<T> : IRepository<T> where T : new()
     {
         private SQLiteAsyncConnection _connection;
         private readonly ISQLiteConnectionFactory _connectionFactory;
@@ -37,21 +36,32 @@ namespace MovieRepoApp.Services.Repo
                 //Debug log
             }
         }
-
-        public Task DeleteAsync(int id)
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                if (_connection == null)
+                    throw new InvalidOperationException("Connection to database could not be established.");
 
-        public Task<IEnumerable<T>> GetAllAsync()
-        {
-            throw new NotImplementedException();
+                var list = await _connection.Table<T>().ToListAsync();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                return Enumerable.Empty<T>();
+            }
         }
 
         public Task<T> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public Task UpdateAsync(T entity)
         {

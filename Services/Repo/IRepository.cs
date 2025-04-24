@@ -7,7 +7,7 @@ using MovieRepoApp.Models;
 
 namespace MovieRepoApp.Services.Repo
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : new()
     {
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
