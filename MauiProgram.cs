@@ -8,7 +8,6 @@ using MovieRepoApp.Views;
 using MovieRepoApp.Services.Repo;
 using MovieRepoApp.Services;
 using MovieRepoApp.Models;
-using MovieRepoApp.Models.Tables;
 
 namespace MovieRepoApp
 {
@@ -70,13 +69,15 @@ namespace MovieRepoApp
         private static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
         {
             builder.Services.AddScoped<AddWatchedMovieViewModel>();
+            builder.Services.AddScoped<WatchedLibraryViewModel>();
 
             return builder;
         }       
         
         private static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
         {
-            builder.Services.AddTransient<AddWatchedMoviePage>();
+            builder.Services.AddScoped<AddWatchedMoviePage>();
+            builder.Services.AddScoped<WatchedLibraryPage>();
 
             return builder;
         }

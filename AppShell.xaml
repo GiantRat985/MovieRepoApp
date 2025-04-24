@@ -16,9 +16,11 @@
         <ShellContent
             Title="Search"
             ContentTemplate="{DataTemplate views:AddWatchedMoviePage}"
-            Route="AddWatchedMovie" />
+            Route="AddWatchedMoviePage" />
         <ShellContent
-            Title="Library" />
+            Title="Library"
+            ContentTemplate="{DataTemplate views:WatchedLibraryPage}"
+            Route="WatchedLibraryPage" />
     </TabBar>
 
 </Shell>

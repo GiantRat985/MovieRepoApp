@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using Microsoft.Extensions.Configuration;
 using MovieRepoApp.Models;
-using MovieRepoApp.Models.Tables;
 using MovieRepoApp.Services;
 using MovieRepoApp.Services.Repo;
 using Newtonsoft.Json;
@@ -153,6 +152,7 @@ namespace MovieRepoApp.ViewModels
                         ImdbRating = Metadata.ImdbRating,
                         Type = Metadata.Type
                     });
+                await _dialogueService.ShowMessageAsync("Movie added.");
             }
             catch (ArgumentException ex)
             {

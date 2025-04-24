@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:MovieRepoApp.ViewModels"
+             xmlns:models="clr-namespace:MovieRepoApp.Models"
+             x:Class="MovieRepoApp.Views.WatchedLibraryPage"
+             Title="WatchedLibraryPage"
+             x:DataType="viewModels:WatchedLibraryViewModel">
+    <VerticalStackLayout>
+        <CollectionView x:Name="WatchedMovieLibrary"
+                        ItemsLayout="HorizontalList"
+                        HorizontalOptions="Start"
+                        Margin="10"
+                        ItemsSource="{Binding MovieEntities}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Image 
+                        x:Name="PosterIcon"
+                        x:DataType="models:MovieEntity"
+                        HeightRequest="225"
+                        WidthRequest="150"
+                        Aspect="AspectFit"
+                        Margin="20"
+                        Source="{Binding Poster}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
