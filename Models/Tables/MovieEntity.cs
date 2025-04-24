@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite;
 
-namespace MovieRepoApp.Models.Tables
+namespace MovieRepoApp.Models
 {
     public class MovieEntity
     {

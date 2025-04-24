@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
-namespace MovieRepoApp.Models.Tables
+namespace MovieRepoApp.Models
 {
     /// <summary>
     /// Holds user provided data about a specific movie.
