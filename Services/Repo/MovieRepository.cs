@@ -26,66 +26,35 @@ namespace MovieRepoApp.Services.Repo
 
         public async Task AddAsync(T entity)
         {
-            int result = 0;
-            try
-            {
-                result = await _connection.InsertAsync(entity);
-            }
-            catch (Exception ex)
-            {
-                //Debug log
-            }
+            int result = await _connection.InsertAsync(entity);
         }
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            try
-            {
-                if (_connection == null)
-                    throw new InvalidOperationException("Connection to database could not be established.");
+            if (_connection == null)
+                throw new InvalidOperationException("Connection to database could not be established.");
 
-                var list = await _connection.Table<T>().ToListAsync();
-                return list;
-            }
-            catch (Exception ex)
-            {
-                return Enumerable.Empty<T>();
-            }
+            var list = await _connection.Table<T>().ToListAsync();
+            return list;
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
-            try
-            {
-                return await _connection.FindAsync<T>(id.ToString());
-            }
-            catch (Exception ex)
-            {
-                return default!;
-            }
+            return await _connection.FindAsync<T>(id.ToString());
         }
 
         public async Task UpdateAsync(T entity)
         {
-            try
-            {
-                await _connection.UpdateAsync(entity);
-            }
-            catch (Exception ex)
-            {
-
-            }
+            await _connection.UpdateAsync(entity);
         }
 
         public async Task DeleteAsync(T entity)
         {
-            try
-            {
-                await _connection.DeleteAsync(entity);
-            }
-            catch (Exception ex)
-            {
+            await _connection.DeleteAsync(entity);
+        }
 
-            }
+        public async Task<IEnumerable<T>> QueryAsync(string query)
+        {
+            return await _connection.QueryAsync<T>(query);
         }
     }
 }

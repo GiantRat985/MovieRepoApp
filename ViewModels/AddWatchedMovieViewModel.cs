@@ -100,6 +100,19 @@ namespace MovieRepoApp.ViewModels
                 }
             }
         }
+        private bool _isWishlist = false;
+        public bool IsWishlist
+        {
+            get => _isWishlist;
+            set
+            {
+                if (_isWishlist != value)
+                {
+                    _isWishlist = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         /// <summary>
         /// Command for the search button.
         /// </summary>
@@ -139,8 +152,9 @@ namespace MovieRepoApp.ViewModels
                     new MovieEntity
                     {
                         ImdbID = Metadata.ImdbID,
+                        OnWishlist = IsWishlist,
                         Title = Metadata.Title,
-                        Year = int.Parse(Metadata.Year),
+                        Year = int.Parse(Metadata.Year.Substring(0,4)),
                         Rated = Metadata.Rated,
                         Genre = Metadata.Genre,
                         Director = Metadata.Director,

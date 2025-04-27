@@ -7,10 +7,12 @@ using SQLite;
 
 namespace MovieRepoApp.Models
 {
+    [Table("Movies")]
     public class MovieEntity
     {
         [PrimaryKey]
         public string ImdbID { get; set; }
+        public bool OnWishlist { get; set; }
         public string Title { get; set; }
         public int Year { get; set; }
         public string Rated { get; set; }

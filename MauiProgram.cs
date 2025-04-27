@@ -76,6 +76,7 @@ namespace MovieRepoApp
         {
             builder.Services.AddScoped<AddWatchedMovieViewModel>();
             builder.Services.AddScoped<WatchedLibraryViewModel>();
+            builder.Services.AddScoped<WishlistLibraryViewModel>();
 
             return builder;
         }       
@@ -84,6 +85,7 @@ namespace MovieRepoApp
         {
             builder.Services.AddScoped<AddWatchedMoviePage>();
             builder.Services.AddScoped<WatchedLibraryPage>();
+            builder.Services.AddScoped<WishlistLibraryPage>();
 
             return builder;
         }

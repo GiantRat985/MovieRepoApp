@@ -83,16 +83,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="UIComponents\MovieCollectionEntityIcon.xaml.cs">
+	    <DependentUpon>MovieCollectionEntityIcon.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\AddWatchedMoviePage.xaml.cs">
 	    <DependentUpon>AddWatchedMoviePage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="UIComponents\MovieCollectionEntityIcon.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UIComponents\MovieDisplay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\WatchedLibraryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\WishlistLibraryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

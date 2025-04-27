@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:MovieRepoApp.ViewModels"
              xmlns:models="clr-namespace:MovieRepoApp.Models"
+             xmlns:viewModels="clr-namespace:MovieRepoApp.ViewModels"
              xmlns:components="clr-namespace:MovieRepoApp.UIComponents"
-             x:Class="MovieRepoApp.Views.WatchedLibraryPage"
-             x:Name="WatchedLibrary"
-             Title="WatchedLibraryPage"
+             x:Class="MovieRepoApp.Views.WishlistLibraryPage"
+             x:Name="WishlistLibrary"
+             Title="WishlistLibraryPage"
              x:DataType="viewModels:WatchedLibraryViewModel">
     <VerticalStackLayout>
-        <CollectionView x:Name="WatchedMovieLibrary"
-                        ItemsLayout="HorizontalList"
-                        HorizontalOptions="Start"
-                        Margin="10"
-                        ItemsSource="{Binding MovieEntities}">
+        <CollectionView
+                ItemsLayout="HorizontalList"
+                HorizontalOptions="Start"
+                Margin="10"
+                ItemsSource="{Binding MovieEntities}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <components:MovieCollectionEntityIcon x:DataType="models:MovieEntity"
-                                                          PosterSource="{Binding Poster}">
+                                                  PosterSource="{Binding Poster}">
                         <FlyoutBase.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Text="Move to Wishlist"
-                                                Command="{Binding Source={x:Reference WatchedLibrary}, Path=BindingContext.ToggleWishlistCommand}"
+                                <MenuFlyoutItem x:Name="ToggleFlyout"
+                                                Text="Move to Watched"
+                                                Command="{Binding Source={x:Reference WishlistLibrary}, Path=BindingContext.ToggleWishlistCommand}"
                                                 CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type components:MovieCollectionEntityIcon}}, Path=BindingContext}"/>
-                                <MenuFlyoutItem Text="Delete"
-                                                Command="{Binding Source={x:Reference WatchedLibrary}, Path=BindingContext.DeleteCommand}"
+                                <MenuFlyoutItem x:Name="DeleteFlyout"
+                                                Text="Delete"
+                                                Command="{Binding Source={x:Reference WishlistLibrary}, Path=BindingContext.DeleteCommand}"
                                                 CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type components:MovieCollectionEntityIcon}}, Path=BindingContext}"/>
                             </MenuFlyout>
                         </FlyoutBase.ContextFlyout>
