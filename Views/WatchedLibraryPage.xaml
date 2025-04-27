@@ -4,6 +4,7 @@
              xmlns:viewModels="clr-namespace:MovieRepoApp.ViewModels"
              xmlns:models="clr-namespace:MovieRepoApp.Models"
              x:Class="MovieRepoApp.Views.WatchedLibraryPage"
+             x:Name="WatchedLibrary"
              Title="WatchedLibraryPage"
              x:DataType="viewModels:WatchedLibraryViewModel">
     <VerticalStackLayout>
@@ -14,14 +15,23 @@
                         ItemsSource="{Binding MovieEntities}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Image 
-                        x:Name="PosterIcon"
-                        x:DataType="models:MovieEntity"
-                        HeightRequest="225"
-                        WidthRequest="150"
-                        Aspect="AspectFit"
-                        Margin="20"
-                        Source="{Binding Poster}"/>
+                    <Frame>
+                        <FlyoutBase.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Delete"
+                                                Command="{Binding Source={x:Reference WatchedLibrary}, Path=BindingContext.DeleteCommand}"
+                                                CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type Frame}}, Path=BindingContext}"/>
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout>
+                        <Image 
+                            x:Name="PosterIcon"
+                            x:DataType="models:MovieEntity"
+                            HeightRequest="225"
+                            WidthRequest="150"
+                            Aspect="AspectFit"
+                            Margin="20"
+                            Source="{Binding Poster}"/>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

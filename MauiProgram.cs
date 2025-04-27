@@ -40,9 +40,15 @@ namespace MovieRepoApp
 
         private static void InitializeDatabase(MauiApp app)
         {
+            /*
             var conn = app.Services.GetRequiredService<ISQLiteConnectionFactory>().CreateAsyncConnection();
             conn.CreateTableAsync<MovieEntity>().Wait();
             conn.CreateTableAsync<MovieUserData>().Wait();
+            */
+            using var conn = app.Services.GetRequiredService<ISQLiteConnectionFactory>().CreateConnection();
+            conn.CreateTable<MovieEntity>();
+            conn.CreateTable<MovieUserData>();
+
         }
 
         /// <summary>
@@ -56,7 +62,7 @@ namespace MovieRepoApp
                 .GetManifestResourceStream("MovieRepoApp.appsettings.json");
 
                 IConfigurationRoot config = new ConfigurationBuilder()
-                    .AddJsonStream(stream)
+                    .AddJsonStream(stream!)
                     .Build();
                 builder.Configuration.AddConfiguration(config);
 
@@ -88,7 +94,7 @@ namespace MovieRepoApp
             builder.Services.AddSingleton<IDialogueService, DialogueService>();
 
             var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MovieRepo.db3");
-            builder.Services.AddTransient<ISQLiteConnectionFactory, SQLiteConnectionFactory>(s => new SQLiteConnectionFactory(dbPath));
+            builder.Services.AddSingleton<ISQLiteConnectionFactory, SQLiteConnectionFactory>(s => new SQLiteConnectionFactory(dbPath));
             builder.Services.AddSingleton<IRepository<MovieEntity>, MovieRepository<MovieEntity>>();
             builder.Services.AddSingleton<IRepository<MovieUserData>, MovieRepository<MovieUserData>>();
 

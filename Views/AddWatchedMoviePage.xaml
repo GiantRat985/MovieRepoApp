@@ -26,6 +26,15 @@
                         Text="Add"
                         Command="{Binding AddCommand}"
                         HorizontalOptions="Center"/>
+                <HorizontalStackLayout>
+                    <CheckBox x:Name="WishlistCheck"
+                              Margin="10,0,0,0"
+                              VerticalOptions="Center"
+                              HorizontalOptions="Center"
+                              IsChecked="{Binding IsWishlist}"/>
+                    <Label Text="Add to Wishlist"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
             </HorizontalStackLayout>
         </VerticalStackLayout>
         <components:MovieDisplay PosterSource="{Binding Poster}"
