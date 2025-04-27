@@ -52,20 +52,40 @@ namespace MovieRepoApp.Services.Repo
             }
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _connection.FindAsync<T>(id.ToString());
+            }
+            catch (Exception ex)
+            {
+                return default!;
+            }
         }
 
-        public Task DeleteAsync(int id)
+        public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _connection.UpdateAsync(entity);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
-
-        public Task UpdateAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _connection.DeleteAsync(entity);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
